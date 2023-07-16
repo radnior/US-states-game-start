@@ -1,10 +1,13 @@
 import turtle
 import pandas
 from names import Names
+import os
 
 screen = turtle.Screen()
 screen.title("US STATES GAME")
 screen.addshape("blank_states_img.gif")
+if os.path.exists("listtolearn.csv"):
+    os.remove("listtolearn.csv")
 
 turtle.shape("blank_states_img.gif")
 data = pandas.read_csv("50_states.csv")
@@ -24,11 +27,7 @@ while len(correct) < 49:
 
 print(f"Congrats! You got {len(correct)} correct answers!")
 print(f"Here are they: {correct}")
-screen.exitonclick()
-states_to_learn = []
-for i in data["state"].values:
-    if i not in correct:
-        states_to_learn.append(i)
-
+states_to_learn = [n for n in data["state"] if n not in correct]
+print(states_to_learn)
 df = pandas.DataFrame(states_to_learn)
 df.to_csv("listtolearn.csv")
